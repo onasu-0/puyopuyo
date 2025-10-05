@@ -19,7 +19,7 @@ class Player {
         Player.rotatingPuyoColor = Math.trunc(Math.rondom() * Config.puyoColorMax) + 1;
 
         //新しいぷよ画像を作成する
-        Player.centerぷよ・oElement = GameImage.getPuyoImage(Player.centerPuyoColor);
+        Player.centerPuyoElement = GameImage.getPuyoImage(Player.centerPuyoColor);
         Player.rotatingPuyoElement = GameImage.getPuyoImage(Player.rotatingPuyoColor);
         Stage.stageElement.appendChild(Player.centerPuyoElement);
         Stage.stageElement.appendChild(Player.rotatingPuyoElement);
