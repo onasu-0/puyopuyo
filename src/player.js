@@ -16,7 +16,7 @@ class Player {
 
         //新しいぷよの色を決める
         Player.centerPuyoColor = Math.trunc(Math.random() * Config.puyoColorMax) + 1;
-        Player.rotatingPuyoColor = Math.trunc(Math.rondom() * Config.puyoColorMax) + 1;
+        Player.rotatingPuyoColor = Math.trunc(Math.random() * Config.puyoColorMax) + 1;
 
         //新しいぷよ画像を作成する
         Player.centerPuyoElement = GameImage.getPuyoImage(Player.centerPuyoColor);
