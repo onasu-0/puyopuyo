@@ -30,5 +30,6 @@ class Config {
 
     static playerFallingSpeed = 0.9;    //プレイ中の自然落下のスピード
     static playerLockDelayFrames = 20;  //何フレーム接地したらぷよを固定するか
+    static playerDownSpeed = 10;    //プレイ中の下キー押下時の落下スピード
 }
 
