@@ -6,6 +6,9 @@ class Player {
     static rotatingPuyoElement = null;
     static groundedFrame = 0;
     static keyStatus = null;
+    static actionStartFrame = 0;
+    static moveSource = 0;
+    static moveDestination = 0;
 
     static initialize() {
         //キーボードの入力を確認する
@@ -160,7 +163,7 @@ class Player {
     }
 
     //イベントループで現在の状況を更新する
-    static update() {
+    static update(frame) {
         //まずプレイヤーの操作ぷよを落下させる
         if (Player.dropPlayerPuyo(Player.keyStatus.down)) {
             //接地が終わったら、ぷよを固定する
@@ -168,9 +171,78 @@ class Player {
         }
         //ぷよの位置を更新する
         Player.setPlayerPuyoPosition();
+
+        //左右キーの押下を確認する
+        if (Player.keyStatus.right || Player.keyStatus.left) {
+            //左右の確認をする
+            const mx = (Player.keyStatus.right) ? 1 : -1;
+            const cx = Player.playerPuyoStatus.x;
+            const cy = Player.playerPuyoStatus.y;
+            const rx = cx + Player.playerPuyoStatus.dx;
+            const ry = cy + Player.playerPuyoStatus.dy;
+
+            //動かしたい方向にブロックがないことを確認する
+            let canMove = true;
+
+            //まずはプレイヤーの操作ぷよのうち中心ぷよの左右を確認
+            if (Stage.getPuyoInfo(cx + mx, cy)) {
+                //ぷよが存在するので動かせない
+                canMove = false;
+            }
+            //次に、回転するぷよの左右を確認
+            if (Stage.getPuyoInfo(rx + mx, ry)) {
+                //ぷよが存在するので動かせない
+                canMove = false;
+            }
+            //接地していない場合は、さらに1個下のブロックの左右も確認する
+            if (Player.groundedFrame === 0) {
+                //中心ぷよの左右を確認
+                if (Stage.getPuyoInfo(cx + mx, cy + 1)) {
+                    //ぷよが存在するので動かせない
+                    canMove = false;
+                }
+                //回転するぷよの左右を確認
+                if (Stage.getPuyoInfo(rx + mx, ry + 1)) {
+                    //ぷよが存在するので動かせない
+                    canMove = false;
+                }
+            }
+
+            if (canMove) {
+                //動かしたい方向に動かすことができるので、移動先情報をセットして移動状態にする
+                Player.actionStartFrame = frame;
+                Player.moveSource = cx * Config.puyoImageWidth;
+                Player.moveDestination = (cx + mx) * Config.puyoImageWidth;
+                Player.playerPuyoStatus.x += mx;
+                return 'moving';
+            }
+        }
+
         return "playing";
     }
 
+    //ぷよを左右に移動させる
+    static movePlayerPuyo(frame) {
+        //左右の移動中も自然落下させる
+        Player.dropPlayerPuyo(false);
+
+        //移動割合を計算する
+        let ratio = (frame - Player.actionStartFrame) / Config.playerMoveFrames;
+        if (ratio > 1) {
+            // 1を超えた場合は1にする
+            ratio = 1;
+        }
+        Player.playerPuyoStatus.left = (Player.moveDestination - Player.moveSource) * ratio + Player.moveSource;
+        //ぷよの表示位置を変化させる
+        Player.setPlayerPuyoPosition();
+
+        if (ratio === 1) {
+            //アニメーションが終了していたらtrue
+            return true;
+        }
+        return false;
+    }
+    
     //現在のプレイヤー操作ぷよを、ぷよぷよ盤の上に配置する
     static fixPlayerPuyo() {
         const { x, y, dx, dy } = Player.playerPuyoStatus;
