@@ -79,7 +79,7 @@ class Stage {
         //新しいネクストぷよの色を決める
         const nextCenterPuyoColor = Math.trunc(Math.random() * Config.puyoColorMax) + 1;
         const nextRotatingPuyoColor = Math.trunc(Math.random() * Config.puyoColorMax) + 1;
-        Stage.nextPuyoColors = [nexyCenterPuyoColor, nextRotatingPuyoColor];
+        Stage.nextPuyoColors = [nextCenterPuyoColor, nextRotatingPuyoColor];
 
         //もしネクストぷよの準備がなかったならば、初回なので画面描画をする必要はない
         if (ret.length) {
