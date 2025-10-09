@@ -287,7 +287,7 @@ class Player {
                 //次の状態を先に設定しておく
                 Player.playerPuyoStatus.x += cx;
                 const nextRotation = (Player.playerPuyoStatus.rotation + 90) % 360;
-                const dCombi = [[1, 0], [0, -1], [-1, 0], [0, -1]][nextRotation / 90];
+                const dCombi = [[1, 0], [0, -1], [-1, 0], [0, 1]][nextRotation / 90];
                 Player.playerPuyoStatus.dx = dCombi[0];
                 Player.playerPuyoStatus.dy = dCombi[1];
                 return 'rotating';
