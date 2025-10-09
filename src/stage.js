@@ -90,7 +90,7 @@ class Stage {
             }
             //新しくネクストぷよを画面上に配置する
             const nextCenterPuyoElement = GameImage.getPuyoImage(nextCenterPuyoColor);
-            const nextRotatingPuyoElement = GameImage.getPuyoImage(nextCenterPuyoColor);
+            const nextRotatingPuyoElement = GameImage.getPuyoImage(nextRotatingPuyoColor);
             nextCenterPuyoElement.style.top = Config.puyoImageHeight + "px";
             Stage.nextElement.append(nextCenterPuyoElement, nextRotatingPuyoElement);
             Stage.nextPuyoElements = [nextCenterPuyoElement, nextRotatingPuyoElement];
